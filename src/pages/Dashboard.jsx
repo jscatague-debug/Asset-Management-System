@@ -1,15 +1,20 @@
 import { useEffect, useState } from 'react'
 import api from '../api/axios'
-
-const StatCard = ({ label, value, color, icon }) => (
-  <div className={`bg-white rounded-xl p-6 shadow-sm border-l-4 ${color} flex items-center gap-4`}>
-    <div className="text-3xl">{icon}</div>
-    <div>
-      <p className="text-gray-500 text-sm">{label}</p>
-      <p className="text-3xl font-bold text-gray-800">{value}</p>
+import { Link } from 'react-router-dom'
+const StatCard = ({ label, value, color, icon, href }) => {
+  const card = (
+    <div className={`bg-white rounded-xl p-6 shadow-sm border-l-4 ${color} flex items-center gap-4 hover:shadow-md transition`}>
+      <div className="text-3xl">{icon}</div>
+      <div>
+        <p className="text-gray-500 text-sm">{label}</p>
+        <p className="text-3xl font-bold text-gray-800">{value}</p>
+      </div>
     </div>
-  </div>
-)
+  )
+
+  return href ? <Link to={href}>{card}</Link> : card
+}
+
 
 const statusClass = (s) => ({
   available: 'bg-green-100 text-green-700',
@@ -34,7 +39,7 @@ export default function Dashboard() {
     <div>
       <h2 className="text-2xl font-bold text-gray-800 mb-6">Dashboard</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
-        <StatCard label="Total Assets" value={stats.total_assets} color="border-blue-500" icon="💻" />
+        <StatCard label="Total Assets" value={stats.total_assets} color="border-blue-500" icon="💻" href="/assets"/>
         <StatCard label="Available" value={stats.available_assets} color="border-green-500" icon="✅" />
         <StatCard label="Assigned" value={stats.assigned_assets} color="border-yellow-500" icon="📋" />
         <StatCard label="In Maintenance" value={stats.maintenance_assets} color="border-red-500" icon="🔧" />
