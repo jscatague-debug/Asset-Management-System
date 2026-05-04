@@ -150,7 +150,7 @@ export default function Assets() {
                     className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Arrive Date</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Purchase Date</label>
                   <input type="date" value={form.purchase_date} onChange={e => set('purchase_date', e.target.value)}
                     className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 </div>
