@@ -58,7 +58,7 @@ export default function Scan() {
           {asset.brand && <Row label="Brand" value={asset.brand} />}
           {asset.model && <Row label="Model" value={asset.model} />}
           {asset.serial_number && <Row label="Serial Number" value={asset.serial_number} />}
-          {asset.purchase_date && <Row label="Purchase Date" value={new Date(asset.purchase_date).toLocaleDateString()} />}
+          {asset.date_recieve && <Row label="Date Recieve" value={new Date(asset.date_receive).toLocaleDateString()} />}
           {asset.assigned_to && <Row label="Assigned To" value={asset.assigned_to} />}
           {asset.assigned_department && <Row label="Department" value={asset.assigned_department} />}
           {asset.notes && <Row label="Notes" value={asset.notes} />}
