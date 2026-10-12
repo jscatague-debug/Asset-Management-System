@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import api from '../api/axios'
 
-const BLANK = { name: '', department: '', email: '', phone: '' }
+const BLANK = { name: '', Address: '', email: '', phone: '' }
 
 export default function Personnel() {
   const [list, setList] = useState([])
@@ -19,7 +19,7 @@ export default function Personnel() {
   useEffect(() => { load() }, [])
 
   const openAdd = () => { setEditItem(null); setForm(BLANK); setError(''); setShowForm(true) }
-  const openEdit = (p) => { setEditItem(p); setForm({ name: p.name, department: p.department || '', email: p.email || '', phone: p.phone || '' }); setError(''); setShowForm(true) }
+  const openEdit = (p) => { setEditItem(p); setForm({ name: p.name, Address: p.Address || '', email: p.email || '', phone: p.phone || '' }); setError(''); setShowForm(true) }
 
   const handleSubmit = async (e) => {
     e.preventDefault(); setSaving(true); setError('')
@@ -33,7 +33,7 @@ export default function Personnel() {
   }
 
   const handleDelete = async (id) => {
-    if (!confirm('Delete this personnel?')) return
+    if (!confirm('Delete this Outlet?')) return
     await api.delete(`/personnel/${id}`); load()
   }
 
@@ -42,14 +42,14 @@ export default function Personnel() {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-800">Personnel</h2>
-        <button onClick={openAdd} className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-sm">+ Add Personnel</button>
+        <h2 className="text-2xl font-bold text-gray-800">Outlet</h2>
+        <button onClick={openAdd} className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-sm">+ Add Outlet</button>
       </div>
 
       <div className="bg-white rounded-xl shadow-sm overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-gray-50">
-            <tr>{['Name','Department','Email','Phone','Actions'].map(h => (
+            <tr>{['Name','Address','Email','Phone','Actions'].map(h => (
               <th key={h} className="text-left px-4 py-3 font-semibold text-gray-600">{h}</th>
             ))}</tr>
           </thead>
@@ -57,11 +57,11 @@ export default function Personnel() {
             {loading ? (
               <tr><td colSpan={5} className="text-center py-10 text-gray-400">Loading…</td></tr>
             ) : list.length === 0 ? (
-              <tr><td colSpan={5} className="text-center py-10 text-gray-400">No personnel found</td></tr>
+              <tr><td colSpan={5} className="text-center py-10 text-gray-400">No Outlet found</td></tr>
             ) : list.map(p => (
               <tr key={p.id} className="border-t hover:bg-gray-50">
                 <td className="px-4 py-3 font-medium">{p.name}</td>
-                <td className="px-4 py-3 text-gray-500">{p.department || '-'}</td>
+                <td className="px-4 py-3 text-gray-500">{p.Address || '-'}</td>
                 <td className="px-4 py-3 text-gray-500">{p.email || '-'}</td>
                 <td className="px-4 py-3 text-gray-500">{p.phone || '-'}</td>
                 <td className="px-4 py-3">
@@ -79,10 +79,10 @@ export default function Personnel() {
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl p-6 w-full max-w-md shadow-2xl">
-            <h3 className="text-xl font-bold mb-4">{editItem ? 'Edit Personnel' : 'Add Personnel'}</h3>
+            <h3 className="text-xl font-bold mb-4">{editItem ? 'Edit Outlet' : 'Add Outlet'}</h3>
             <form onSubmit={handleSubmit} className="space-y-4">
               {error && <div className="bg-red-50 border border-red-200 text-red-600 p-3 rounded-lg text-sm">{error}</div>}
-              {[['name','Name',true,'text'],['department','Department',false,'text'],['email','Email',false,'email'],['phone','Phone',false,'text']].map(([k, label, req, type]) => (
+              {[['name','Name',true,'text'],['Address','Address',false,'text'],['email','Email',false,'email'],['phone','Phone',false,'text']].map(([k, label, req, type]) => (
                 <div key={k}>
                   <label className="block text-sm font-medium text-gray-700 mb-1">{label}{req ? ' *' : ''}</label>
                   <input type={type} value={form[k]} onChange={e => set(k, e.target.value)} required={req}
