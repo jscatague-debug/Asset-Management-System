@@ -4,10 +4,10 @@ import api from '../api/axios'
 export default function Assignments() {
   const [assignments, setAssignments] = useState([])
   const [assets, setAssets] = useState([])
-  const [Outlet, setOutlet] = useState([])
+  const [personnel, setPersonnel] = useState([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
-  const [form, setForm] = useState({ asset_id: '', Outlet_id: '', notes: '' })
+  const [form, setForm] = useState({ asset_id: '', personnel_id: '', notes: '' })
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
 
@@ -16,11 +16,11 @@ export default function Assignments() {
     Promise.all([
       api.get('/assignments'),
       api.get('/assets', { params: { status: 'available' } }),
-      api.get('/Outlet'),
+      api.get('/personnel'),
     ]).then(([a, as, p]) => {
       setAssignments(a.data.data)
       setAssets(as.data.data)
-      setOutlet(p.data.data)
+      setPersonnel(p.data.data)
     }).finally(() => setLoading(false))
   }
   useEffect(() => { load() }, [])
@@ -29,7 +29,7 @@ export default function Assignments() {
     e.preventDefault(); setSaving(true); setError('')
     try {
       await api.post('/assignments', form)
-      setShowForm(false); setForm({ asset_id: '', Outlet_id: '', notes: '' }); load()
+      setShowForm(false); setForm({ asset_id: '', personnel_id: '', notes: '' }); load()
     } catch (err) {
       setError(err.response?.data?.message || 'Error creating assignment')
     } finally { setSaving(false) }
@@ -51,7 +51,7 @@ export default function Assignments() {
       <div className="bg-white rounded-xl shadow-sm overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-gray-50">
-            <tr>{['Asset','Tag','Outlet','Department','Assigned','Returned','Actions'].map(h => (
+            <tr>{['Asset','Tag','Personnel','Department','Assigned','Returned','Actions'].map(h => (
               <th key={h} className="text-left px-4 py-3 font-semibold text-gray-600 whitespace-nowrap">{h}</th>
             ))}</tr>
           </thead>
@@ -64,7 +64,7 @@ export default function Assignments() {
               <tr key={a.id} className="border-t hover:bg-gray-50">
                 <td className="px-4 py-3 font-medium">{a.asset_name}</td>
                 <td className="px-4 py-3 font-mono text-xs">{a.asset_tag}</td>
-                <td className="px-4 py-3">{a.Outlet_name}</td>
+                <td className="px-4 py-3">{a.personnel_name}</td>
                 <td className="px-4 py-3 text-gray-500">{a.department || '-'}</td>
                 <td className="px-4 py-3 text-gray-500">{new Date(a.assigned_at).toLocaleDateString()}</td>
                 <td className="px-4 py-3">
@@ -87,7 +87,7 @@ export default function Assignments() {
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl p-6 w-full max-w-md shadow-2xl">
-            <h3 className="text-xl font-bold mb-4">Assign Asset to Outlet</h3>
+            <h3 className="text-xl font-bold mb-4">Assign Asset to Personnel</h3>
             <form onSubmit={handleSubmit} className="space-y-4">
               {error && <div className="bg-red-50 border border-red-200 text-red-600 p-3 rounded-lg text-sm">{error}</div>}
               <div>
@@ -99,11 +99,11 @@ export default function Assignments() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Outlet *</label>
-                <select value={form.Outlet_id} onChange={e => setForm(f => ({...f, Outlet_id: e.target.value}))} required
+                <label className="block text-sm font-medium text-gray-700 mb-1">Personnel *</label>
+                <select value={form.personnel_id} onChange={e => setForm(f => ({...f, personnel_id: e.target.value}))} required
                   className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none">
-                  <option value="">Select Outlet</option>
-                  {Outlet.map(p => <option key={p.id} value={p.id}>{p.name}{p.department ? ` — ${p.department}` : ''}</option>)}
+                  <option value="">Select personnel</option>
+                  {personnel.map(p => <option key={p.id} value={p.id}>{p.name}{p.department ? ` — ${p.department}` : ''}</option>)}
                 </select>
               </div>
               <div>
