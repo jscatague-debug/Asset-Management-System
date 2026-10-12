@@ -102,7 +102,7 @@ export default function Assignments() {
                 <label className="block text-sm font-medium text-gray-700 mb-1">Outlet *</label>
                 <select value={form.personnel_id} onChange={e => setForm(f => ({...f, personnel_id: e.target.value}))} required
                   className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none">
-                  <option value="">Select personnel</option>
+                  <option value="">Select Outlet</option>
                   {personnel.map(p => <option key={p.id} value={p.id}>{p.name}{p.department ? ` — ${p.department}` : ''}</option>)}
                 </select>
               </div>

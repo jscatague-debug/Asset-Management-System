@@ -43,7 +43,7 @@ export default function Dashboard() {
         <StatCard label="Available" value={stats.available_assets} color="border-green-500" icon="✅" href="/assets"/>
         <StatCard label="Assigned" value={stats.assigned_assets} color="border-yellow-500" icon="📋" href="/assignments"/>
         <StatCard label="In Maintenance" value={stats.maintenance_assets} color="border-red-500" icon="🔧" href="/maintenance"/>
-        <StatCard label="Total Outlet" value={stats.total_personnel} color="border-purple-500" icon="👥" href="/outlet"/>
+        <StatCard label="Total Outlet" value={stats.total_personnel} color="border-purple-500" icon="👥" href="/personnel"/>
         <StatCard label="Pending Maintenance" value={stats.pending_maintenance} color="border-orange-500" icon="⚠️" href="/maintenance"/>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
