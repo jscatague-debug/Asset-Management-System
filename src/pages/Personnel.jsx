@@ -42,14 +42,14 @@ export default function Personnel() {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-800">Personnel</h2>
+        <h2 className="text-2xl font-bold text-gray-800">Outlet</h2>
         <button onClick={openAdd} className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-sm">+ Add Personnel</button>
       </div>
 
       <div className="bg-white rounded-xl shadow-sm overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-gray-50">
-            <tr>{['Name','Department','Email','Phone','Actions'].map(h => (
+            <tr>{['Name','Address','Email','Phone','Actions'].map(h => (
               <th key={h} className="text-left px-4 py-3 font-semibold text-gray-600">{h}</th>
             ))}</tr>
           </thead>
@@ -79,10 +79,10 @@ export default function Personnel() {
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl p-6 w-full max-w-md shadow-2xl">
-            <h3 className="text-xl font-bold mb-4">{editItem ? 'Edit Personnel' : 'Add Personnel'}</h3>
+            <h3 className="text-xl font-bold mb-4">{editItem ? 'Edit Outlet' : 'Add Outlet'}</h3>
             <form onSubmit={handleSubmit} className="space-y-4">
               {error && <div className="bg-red-50 border border-red-200 text-red-600 p-3 rounded-lg text-sm">{error}</div>}
-              {[['name','Name',true,'text'],['department','Department',false,'text'],['email','Email',false,'email'],['phone','Phone',false,'text']].map(([k, label, req, type]) => (
+              {[['name','Name',true,'text'],['department','Address',false,'text'],['email','Email',false,'email'],['phone','Phone',false,'text']].map(([k, label, req, type]) => (
                 <div key={k}>
                   <label className="block text-sm font-medium text-gray-700 mb-1">{label}{req ? ' *' : ''}</label>
                   <input type={type} value={form[k]} onChange={e => set(k, e.target.value)} required={req}
