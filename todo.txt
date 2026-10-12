@@ -1,0 +1,24 @@
+Personel - > outlet nmae
+Deparmet - > Outlet address
+
+how to run system
+
+check it node_modules are instal 
+
+
+npm install 
+
+run on development mode 
+npm run dev
+
+build on production
+
+npm run build
+
+
+
+C:\xampp\htdocs>cd /d D:/
+
+D:\>cd  D:\project-\Asset-Management-System   
+
+D:\project-\Asset-Management-System>
