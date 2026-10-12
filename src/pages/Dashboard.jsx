@@ -14,7 +14,7 @@ const StatCard = ({ label, value, color, icon, href }) => {
 
   return href ? <Link to={href}>{card}</Link> : card
 }
-
+// saa
 
 const statusClass = (s) => ({
   available: 'bg-green-100 text-green-700',
