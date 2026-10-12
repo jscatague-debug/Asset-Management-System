@@ -51,7 +51,7 @@ export default function Assignments() {
       <div className="bg-white rounded-xl shadow-sm overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-gray-50">
-            <tr>{['Asset','Tag','Personnel','Department','Assigned','Returned','Actions'].map(h => (
+            <tr>{['Asset','Tag','Outlet','Address','Assigned','Returned','Actions'].map(h => (
               <th key={h} className="text-left px-4 py-3 font-semibold text-gray-600 whitespace-nowrap">{h}</th>
             ))}</tr>
           </thead>
@@ -87,7 +87,7 @@ export default function Assignments() {
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl p-6 w-full max-w-md shadow-2xl">
-            <h3 className="text-xl font-bold mb-4">Assign Asset to Personnel</h3>
+            <h3 className="text-xl font-bold mb-4">Assign Asset to Outlet</h3>
             <form onSubmit={handleSubmit} className="space-y-4">
               {error && <div className="bg-red-50 border border-red-200 text-red-600 p-3 rounded-lg text-sm">{error}</div>}
               <div>
