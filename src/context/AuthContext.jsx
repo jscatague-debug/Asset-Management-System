@@ -31,8 +31,28 @@ export function AuthProvider({ children }) {
     setUser(null)
   }
 
+  const updateProfile = async (data) => {
+    const res = await api.put('/auth/profile', data)
+    setUser(u => ({ ...u, ...res.data.data }))
+    return res.data
+  }
+
+  const uploadAvatar = async (file) => {
+    const data = new FormData()
+    data.append('avatar', file)
+    const res = await api.post('/auth/avatar', data)
+    setUser(u => ({ ...u, ...res.data.data }))
+    return res.data
+  }
+
+  const removeAvatar = async () => {
+    const res = await api.delete('/auth/avatar')
+    setUser(u => ({ ...u, ...res.data.data }))
+    return res.data
+  }
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, updateProfile, uploadAvatar, removeAvatar }}>
       {children}
     </AuthContext.Provider>
   )

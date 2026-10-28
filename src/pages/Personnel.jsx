@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import api from '../api/axios'
+import ConfirmModal from '../components/ConfirmModal'
 
 const BLANK = { name: '', Address: '', email: '', phone: '' }
 
@@ -11,6 +12,7 @@ export default function Personnel() {
   const [form, setForm] = useState(BLANK)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
+  const [archiveItem, setArchiveItem] = useState(null)
 
   const load = () => {
     setLoading(true)
@@ -32,9 +34,8 @@ export default function Personnel() {
     } finally { setSaving(false) }
   }
 
-  const handleDelete = async (id) => {
-    if (!confirm('Delete this Outlet?')) return
-    await api.delete(`/personnel/${id}`); load()
+  const archiveOutlet = async () => {
+    await api.delete(`/personnel/${archiveItem.id}`); load()
   }
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
@@ -67,7 +68,7 @@ export default function Personnel() {
                 <td className="px-4 py-3">
                   <div className="flex gap-2">
                     <button onClick={() => openEdit(p)} className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded hover:bg-blue-200">Edit</button>
-                    <button onClick={() => handleDelete(p.id)} className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded hover:bg-red-200">Delete</button>
+                    <button onClick={() => setArchiveItem(p)} className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded hover:bg-red-200">Archive</button>
                   </div>
                 </td>
               </tr>
@@ -98,6 +99,14 @@ export default function Personnel() {
             </form>
           </div>
         </div>
+      )}
+
+      {archiveItem && (
+        <ConfirmModal tone="amber" icon="🗄️" confirmLabel="Move to Archive" busyLabel="Archiving…"
+          title="Archive outlet?"
+          message={<><strong className="text-slate-700">{archiveItem.name}</strong> will be moved to the Archive Log.</>}
+          note="Its assignment history is saved with it. Any assets currently assigned to this outlet become available. You can restore it anytime from the Archive Log."
+          onConfirm={archiveOutlet} onClose={() => setArchiveItem(null)} />
       )}
     </div>
   )

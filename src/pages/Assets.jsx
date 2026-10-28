@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import api from '../api/axios'
 import QRCodeModal from '../components/QRCodeModal'
+import ConfirmModal from '../components/ConfirmModal'
 
 const BLANK = { name: '', asset_tag: '', type: '', brand: '', model: '', serial_number: '', purchase_date: '', notes: '', status: 'available' }
-const TYPES = ['Laptop', 'Desktop', 'Monitor', 'Printer', 'Server', 'Network Device', 'Mobile', 'Tablet', 'Other']
+const TYPES = ['Laptop', 'Desktop']
 
 const badge = (s) => {
   const cls = { available: 'bg-green-100 text-green-700', assigned: 'bg-yellow-100 text-yellow-700', maintenance: 'bg-red-100 text-red-700' }
@@ -21,6 +22,7 @@ export default function Assets() {
   const [form, setForm] = useState(BLANK)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
+  const [archiveItem, setArchiveItem] = useState(null)
 
   const load = () => {
     setLoading(true)
@@ -50,9 +52,8 @@ export default function Assets() {
     } finally { setSaving(false) }
   }
 
-  const handleDelete = async (id) => {
-    if (!confirm('Delete this asset?')) return
-    await api.delete(`/assets/${id}`); load()
+  const archiveAsset = async () => {
+    await api.delete(`/assets/${archiveItem.id}`); load()
   }
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
@@ -100,7 +101,7 @@ export default function Assets() {
                   <div className="flex gap-2">
                     <button onClick={() => setQrAsset(a)} className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded hover:bg-purple-200">QR</button>
                     <button onClick={() => openEdit(a)} className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded hover:bg-blue-200">Edit</button>
-                    <button onClick={() => handleDelete(a.id)} className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded hover:bg-red-200">Delete</button>
+                    <button onClick={() => setArchiveItem(a)} className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded hover:bg-red-200">Archive</button>
                   </div>
                 </td>
               </tr>
@@ -115,8 +116,8 @@ export default function Assets() {
             <h3 className="text-xl font-bold mb-4">{editAsset ? 'Edit Asset' : 'Add Asset'}</h3>
             <form onSubmit={handleSubmit} className="space-y-4">
               {error && <div className="bg-red-50 border border-red-200 text-red-600 p-3 rounded-lg text-sm">{error}</div>}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="col-span-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="sm:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">Name *</label>
                   <input value={form.name} onChange={e => set('name', e.target.value)} required
                     className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
@@ -165,7 +166,7 @@ export default function Assets() {
                     </select>
                   </div>
                 )}
-                <div className="col-span-2">
+                <div className="sm:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
                   <textarea value={form.notes} onChange={e => set('notes', e.target.value)} rows={3}
                     className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
@@ -185,6 +186,17 @@ export default function Assets() {
       )}
 
       {qrAsset && <QRCodeModal asset={qrAsset} onClose={() => setQrAsset(null)} />}
+
+      {archiveItem && (
+        <ConfirmModal tone="amber" icon="🗄️" confirmLabel="Move to Archive" busyLabel="Archiving…"
+          title="Archive asset?"
+          message={<><strong className="text-slate-700">{archiveItem.name} ({archiveItem.asset_tag})</strong> will be moved to the Archive Log.</>}
+          note={<>
+            {archiveItem.assigned_to && <p className="mb-1 text-amber-700">⚠ Currently assigned to <strong>{archiveItem.assigned_to}</strong>.</p>}
+            Its assignment history and maintenance logs are saved with it. You can restore it anytime from the Archive Log.
+          </>}
+          onConfirm={archiveAsset} onClose={() => setArchiveItem(null)} />
+      )}
     </div>
   )
 }

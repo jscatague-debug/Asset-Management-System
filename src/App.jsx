@@ -8,6 +8,7 @@ import Personnel from './pages/Personnel'
 import Assignments from './pages/Assignments'
 import Maintenance from './pages/Maintenance'
 import Scan from './pages/Scan'
+import Archive from './pages/Archive'
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
             <Route path="/personnel" element={<Personnel />} />
             <Route path="/assignments" element={<Assignments />} />
             <Route path="/maintenance" element={<Maintenance />} />
+            <Route path="/archive" element={<Archive />} />
           </Route>
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
